@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet{
 //If User ID is correct then checking for password
 					if(login.getPassword().equals(passwordMD5)) {
 						UserBean user = umi.getUserDetails(userId);
-						logger.info("User "+user.getName()+" is authenticated.");
+						logger.info("User {} is authenticated.", user.getName());
 //Setting RulesEngine for implementing rules
 						RulesEngine rulesEngine = new RulesEngineImpl();
 						StatefulKnowledgeSession ksession = rulesEngine.setupRulesEngine();

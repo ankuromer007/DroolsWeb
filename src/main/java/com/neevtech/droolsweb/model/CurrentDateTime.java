@@ -26,7 +26,7 @@ public class CurrentDateTime {
 		this.hour = calendar.get(Calendar.HOUR_OF_DAY);
 		this.minute = calendar.get(Calendar.MINUTE);
 		this.second = calendar.get(Calendar.SECOND);
-		logger.info("CurrentDateTime: "+calendar.getTime());
+		logger.info("CurrentDateTime: {}", calendar.getTime());
 	}
 	
 	public int getDate() {
