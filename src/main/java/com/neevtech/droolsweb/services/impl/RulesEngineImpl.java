@@ -21,14 +21,12 @@ import com.neevtech.droolsweb.services.RulesEngine;
 
 public class RulesEngineImpl implements RulesEngine {
 	private static final Logger logger = LoggerFactory.getLogger(RulesEngineImpl.class);
-	//KnowledgeRuntimeLogger logger = null;
 
 	public StatefulKnowledgeSession setupRulesEngine(){
 		StatefulKnowledgeSession ksession = null;
 		try {
 			KnowledgeBase kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
-			//logger = KnowledgeRuntimeLoggerFactory.newConsoleLogger(ksession);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -62,6 +60,5 @@ public class RulesEngineImpl implements RulesEngine {
 			ksession.insert(item);
 		}
 		ksession.fireAllRules();
-		//logger.close();
 	}
 }

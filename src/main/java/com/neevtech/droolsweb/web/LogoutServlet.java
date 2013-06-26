@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.neevtech.droolsweb.model.UserBean;
+import com.neevtech.droolsweb.util.Constants;
 import com.neevtech.droolsweb.util.SessionServlet;
 
 public class LogoutServlet extends SessionServlet {
@@ -19,8 +21,8 @@ public class LogoutServlet extends SessionServlet {
 			throws ServletException, IOException {	
 		try {
 			HttpSession session = req.getSession();
+			logger.info("User {} logout successfully.", ((UserBean)session.getAttribute(Constants.User)).getName());
 			session.invalidate();
-			logger.info("User logout successfully.");
 			res.sendRedirect("/DroolsWeb/index");
 		} catch (Exception ex) {
 			ex.printStackTrace();

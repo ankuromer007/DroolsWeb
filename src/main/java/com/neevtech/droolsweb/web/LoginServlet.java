@@ -23,7 +23,6 @@ import com.neevtech.droolsweb.model.ItemBean;
 import com.neevtech.droolsweb.model.LoginBean;
 import com.neevtech.droolsweb.model.UserBean;
 import com.neevtech.droolsweb.services.RulesEngine;
-import com.neevtech.droolsweb.services.impl.RulesEngineImpl;
 import com.neevtech.droolsweb.util.ComputeMD5Hash;
 import com.neevtech.droolsweb.util.Constants;
 
@@ -67,12 +66,14 @@ public class LoginServlet extends HttpServlet{
 					if(login.getPassword().equals(passwordMD5)) {
 						UserBean user = umi.getUserDetails(userId);
 						logger.info("User {} is authenticated.", user.getName());
-//Setting RulesEngine for implementing rules
-						RulesEngine rulesEngine = new RulesEngineImpl();
-						StatefulKnowledgeSession ksession = rulesEngine.setupRulesEngine();
 //Getting Item list for setting items in knowledge base
 						ItemManager itemManager = new ItemManagerImpl();
 						List<ItemBean> items = itemManager.getAllItems();
+//Getting RulesEngine from ServletContext
+						RulesEngine rulesEngine = (RulesEngine)getServletContext().getAttribute(Constants.RulesEngine);
+						StatefulKnowledgeSession ksession = (StatefulKnowledgeSession)getServletContext().getAttribute(Constants.Ksession);
+						logger.info("RulesEngineObject: {}", rulesEngine.hashCode());
+						logger.info("KsessionObject: {}", ksession.hashCode());
 //Executing rules written in Rule File
 						rulesEngine.executeRules(user, items, ksession);
 						

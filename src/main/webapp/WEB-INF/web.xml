@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <web-app>
-
 	<welcome-file-list>
 		<welcome-file>index</welcome-file>
 	</welcome-file-list>
-
+	
+	<listener>
+		<listener-class>com.neevtech.droolsweb.util.AppServletContextListener</listener-class>
+	</listener>
 	
 	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>com.neevtech.droolsweb.web.LoginServlet</servlet-class>
-	</servlet>
-	
+	</servlet>	
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/login</url-pattern>
@@ -21,7 +22,6 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<servlet-class>com.neevtech.droolsweb.web.LogoutServlet</servlet-class>
 	</servlet>
-	
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
@@ -32,7 +32,6 @@
 		<servlet-name>index</servlet-name>
 		<jsp-file>/index.jsp</jsp-file>
 	</servlet>
-	
 	<servlet-mapping>
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -42,10 +41,8 @@
 		<servlet-name>home.jsp</servlet-name>
 		<jsp-file>/jsp/home.jsp</jsp-file>
 	</servlet>
-	
 	<servlet-mapping>
 		<servlet-name>home.jsp</servlet-name>
 		<url-pattern>/home</url-pattern>
 	</servlet-mapping>
-
 </web-app>
