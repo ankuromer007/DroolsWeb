@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,47 +34,35 @@ public class LoginServlet extends HttpServlet{
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-//Adding header to Clear Cache before creating a new session.
 		res.addHeader("Pragma", "no-cache");
 		res.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
 		res.addHeader("Cache-Control", "pre-check=0,post-check=0");
 		res.setDateHeader("Expires", 0);
-//Creating Session		
+		
 		HttpSession session = req.getSession(true);
-//Checking if session is created.
 		if (session == null) 
 			res.sendRedirect("/DroolsWeb/index");
-		
 		if (!session.getId().equals(req.getParameter("sessId"))) {
 			session.invalidate();
 			res.sendRedirect("/DroolsWeb/index");
 		} else {
 			try {
-//Fetching Username, Password and Remember Me from JSP page(login.jsp)				
 				String userId = (String) req.getParameter("uname");
 				String password = (String) req.getParameter("pass");
-//********Computing Hash Value of Username and password using MD5 method*********
 				String passwordMD5=ComputeMD5Hash.md5(password);
-//Calling UserManager for finding that user exist or not
-//and forwarding the request to appropriate page.
+				
 				UserManager umi = new UserManagerImpl();
 				LoginBean login = umi.isUserExists(userId);
-//Checking User ID is correct or not
 				if(login.getUserId() != null) {
-//If User ID is correct then checking for password
 					if(login.getPassword().equals(passwordMD5)) {
 						UserBean user = umi.getUserDetails(userId);
 						logger.info("User {} is authenticated.", user.getName());
-//Getting Item list for setting items in knowledge base
+						
 						ItemManager itemManager = new ItemManagerImpl();
 						List<ItemBean> items = itemManager.getAllItems();
-//Getting RulesEngine from ServletContext
+						
 						RulesEngine rulesEngine = (RulesEngine)getServletContext().getAttribute(Constants.RulesEngine);
-						StatefulKnowledgeSession ksession = (StatefulKnowledgeSession)getServletContext().getAttribute(Constants.Ksession);
-						logger.info("RulesEngineObject: {}", rulesEngine.hashCode());
-						logger.info("KsessionObject: {}", ksession.hashCode());
-//Executing rules written in Rule File
-						rulesEngine.executeRules(user, items, ksession);
+						rulesEngine.executeRules(user, items);
 						
 						session.setAttribute(Constants.User, user);
 						session.setAttribute(Constants.Items, items);
@@ -84,7 +71,6 @@ public class LoginServlet extends HttpServlet{
 								.getRequestDispatcher("/home");
 						dispatch.forward(req, res);
 					} else {
-//If User ID is correct but password is wrong
 						logger.info("User is not authenticated.");
 						req.setAttribute("loginError","Username or password you provided does not match.");
 						req.setAttribute("usernameValue",userId);
@@ -93,7 +79,6 @@ public class LoginServlet extends HttpServlet{
 						dispatch.forward(req, res);
 					}
 				} else {
-//If User ID is wrong
 					logger.info("User ID entered is not correct.");
 					req.setAttribute("loginError","Username or password you provided does not match.");
 					RequestDispatcher dispatch = this.getServletContext()

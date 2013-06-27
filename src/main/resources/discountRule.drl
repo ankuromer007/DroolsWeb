@@ -11,6 +11,8 @@ salience 1
 
 	when
 		not CurrentDateTime()
+		UserBean()
+		ItemBean()
 	then
 		insert( new CurrentDateTime() );
 		logger.info("RuleName: {}", drools.getRule().getName());
@@ -122,5 +124,25 @@ salience -1
 		$currentDateTime: CurrentDateTime()
 	then
 		retract( $currentDateTime );
+		logger.info("RuleName: {}", drools.getRule().getName());
+end
+
+rule "Retract Userbean from knowledgebase"
+salience -1
+
+	when
+		$user: UserBean()
+	then
+		retract( $user );
+		logger.info("RuleName: {}", drools.getRule().getName());
+end
+
+rule "Retract Itembean from knowledgebase"
+salience -1
+
+	when
+		$item: ItemBean()
+	then
+		retract( $item );
 		logger.info("RuleName: {}", drools.getRule().getName());
 end

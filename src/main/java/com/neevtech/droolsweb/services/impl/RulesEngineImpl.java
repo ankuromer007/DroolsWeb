@@ -21,16 +21,15 @@ import com.neevtech.droolsweb.services.RulesEngine;
 
 public class RulesEngineImpl implements RulesEngine {
 	private static final Logger logger = LoggerFactory.getLogger(RulesEngineImpl.class);
+	private static StatefulKnowledgeSession ksession = null;
 
-	public StatefulKnowledgeSession setupRulesEngine(){
-		StatefulKnowledgeSession ksession = null;
+	public void setupRulesEngine(){
 		try {
 			KnowledgeBase kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
         } catch (Throwable t) {
             t.printStackTrace();
         }
-		return ksession;
 	}
 	
 	private KnowledgeBase readKnowledgeBase() throws Exception {
@@ -46,14 +45,12 @@ public class RulesEngineImpl implements RulesEngine {
             }
             throw new IllegalArgumentException("Could not parse knowledge.");
         }
-        
         KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
         kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-        
         return kbase;
     }
 	
-	public void executeRules(UserBean user, List<ItemBean> items, StatefulKnowledgeSession ksession) {
+	public void executeRules(UserBean user, List<ItemBean> items) {
 		ksession.setGlobal("logger", logger);
 		ksession.insert(user);
 		for (ItemBean item : items) {
