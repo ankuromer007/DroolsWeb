@@ -25,6 +25,7 @@ public class RulesEngineImpl implements RulesEngine {
 		try {
 			KnowledgeBase kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
+			ksession.setGlobal("logger", logger);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -58,7 +59,7 @@ public class RulesEngineImpl implements RulesEngine {
 		kaconf.setProperty("drools.agent.scanResources", "true");
 		kaconf.setProperty("drools.agent.newAgent", "true");
 		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaconf);
-		kagent.applyChangeSet( ResourceFactory.newUrlResource(new URL("http://localhost:8080/DroolsWeb/changeset")) );
+		kagent.applyChangeSet(ResourceFactory.newUrlResource(new URL("file:/home/ankur/Desktop/changeset.xml")));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
@@ -66,7 +67,6 @@ public class RulesEngineImpl implements RulesEngine {
     }
 	
 	public void executeRules(UserBean user, List<ItemBean> items) {
-		ksession.setGlobal("logger", logger);
 		ksession.insert(user);
 		for (ItemBean item : items) {
 			ksession.insert(item);
