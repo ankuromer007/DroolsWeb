@@ -1,15 +1,13 @@
 package com.neevtech.droolsweb.services.impl;
 
-import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderErrors;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
+import org.drools.agent.KnowledgeAgent;
+import org.drools.agent.KnowledgeAgentConfiguration;
+import org.drools.agent.KnowledgeAgentFactory;
+import org.drools.io.ResourceChangeScannerConfiguration;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
@@ -32,7 +30,7 @@ public class RulesEngineImpl implements RulesEngine {
         }
 	}
 	
-	private KnowledgeBase readKnowledgeBase() throws Exception {
+	/*private KnowledgeBase readKnowledgeBase() throws Exception {
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
         File drlFile = new File(System.getProperty("user.home")+"/workspace/DroolsWeb/src/main/resources/discountRule.drl");
         kbuilder.add(ResourceFactory.newFileResource(drlFile), ResourceType.DRL);
@@ -48,6 +46,23 @@ public class RulesEngineImpl implements RulesEngine {
         KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
         kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
         return kbase;
+    }*/
+	
+	private KnowledgeBase readKnowledgeBase() throws Exception {
+		ResourceChangeScannerConfiguration sconf = ResourceFactory.getResourceChangeScannerService().newResourceChangeScannerConfiguration();
+		sconf.setProperty("drools.resource.scanner.interval", "10");
+		ResourceFactory.getResourceChangeScannerService().configure(sconf);
+
+		KnowledgeAgentConfiguration kaconf = KnowledgeAgentFactory.newKnowledgeAgentConfiguration();
+		kaconf.setProperty("drools.agent.scanDirectories", "true");
+		kaconf.setProperty("drools.agent.scanResources", "true");
+		kaconf.setProperty("drools.agent.newAgent", "true");
+		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaconf);
+		kagent.applyChangeSet( ResourceFactory.newUrlResource(new URL("http://localhost:8080/DroolsWeb/changeset")) );
+
+		ResourceFactory.getResourceChangeNotifierService().start();
+		ResourceFactory.getResourceChangeScannerService().start();
+		return kagent.getKnowledgeBase();
     }
 	
 	public void executeRules(UserBean user, List<ItemBean> items) {
