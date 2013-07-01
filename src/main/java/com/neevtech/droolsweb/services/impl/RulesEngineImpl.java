@@ -1,6 +1,5 @@
 package com.neevtech.droolsweb.services.impl;
 
-import java.net.URL;
 import java.util.List;
 
 import org.drools.KnowledgeBase;
@@ -55,11 +54,11 @@ public class RulesEngineImpl implements RulesEngine {
 		ResourceFactory.getResourceChangeScannerService().configure(sconf);
 
 		KnowledgeAgentConfiguration kaconf = KnowledgeAgentFactory.newKnowledgeAgentConfiguration();
-		kaconf.setProperty("drools.agent.scanDirectories", "true");
+		kaconf.setProperty("drools.agent.scanDirectories", "false");
 		kaconf.setProperty("drools.agent.scanResources", "true");
 		kaconf.setProperty("drools.agent.newAgent", "true");
 		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaconf);
-		kagent.applyChangeSet(ResourceFactory.newUrlResource(new URL("file:/home/ankur/Desktop/changeset.xml")));
+		kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();

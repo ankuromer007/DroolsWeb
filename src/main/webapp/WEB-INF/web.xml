@@ -45,22 +45,4 @@
 		<servlet-name>home.jsp</servlet-name>
 		<url-pattern>/home</url-pattern>
 	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>discountRuleDRL</servlet-name>
-		<jsp-file>/discountRule.drl</jsp-file>
-	</servlet>
-	<servlet-mapping>
-        <servlet-name>discountRuleDRL</servlet-name>
-        <url-pattern>/drl</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-		<servlet-name>changeset</servlet-name>
-		<jsp-file>/changeset.xml</jsp-file>
-	</servlet>
-	<servlet-mapping>
-        <servlet-name>changeset</servlet-name>
-        <url-pattern>/changeset</url-pattern>
-    </servlet-mapping>
 </web-app>
