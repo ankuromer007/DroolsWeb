@@ -65,6 +65,25 @@ public class RulesEngineImpl implements RulesEngine {
 		return kagent.getKnowledgeBase();
     }
 	
+	/*private KnowledgeBase readKnowledgeBase() throws Exception {
+		DecisionTableConfiguration dtconf = KnowledgeBuilderFactory.newDecisionTableConfiguration();
+		dtconf.setInputType( DecisionTableInputType.XLS );
+		
+		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+        kbuilder.add(ResourceFactory.newClassPathResource("discountRule.xls", getClass()), ResourceType.DTABLE, dtconf);
+        
+        KnowledgeBuilderErrors errors = kbuilder.getErrors();
+        if (errors.size() > 0) {
+            for (KnowledgeBuilderError error: errors) {
+                System.err.println(error);
+            }
+            throw new IllegalArgumentException("Could not parse knowledge.");
+        }
+        KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+        kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+        return kbase;
+    }*/
+	
 	public void executeRules(UserBean user, List<ItemBean> items) {
 		ksession.insert(user);
 		for (ItemBean item : items) {
