@@ -58,7 +58,8 @@ public class RulesEngineImpl implements RulesEngine {
 		kaconf.setProperty("drools.agent.scanResources", "true");
 		kaconf.setProperty("drools.agent.newAgent", "true");
 		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaconf);
-		kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
+		kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
+		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
