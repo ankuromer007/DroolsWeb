@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<datasource jndi-name="java:jboss/datasources/DroolsWeb"
+		enabled="true" use-java-context="true" pool-name="DroolsWeb">
+		<connection-url>jdbc:mysql://localhost:3306/drools_web</connection-url>
+		<driver>mysql-5-driver</driver>
+		<security>
+			<user-name>root</user-name>
+			<password>mysql</password>
+		</security>
+	</datasource>
+</datasources>

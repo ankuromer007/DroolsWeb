@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.neevtech.droolsweb.dao.ItemManager;
 import com.neevtech.droolsweb.dao.UserManager;
@@ -26,7 +25,7 @@ import com.neevtech.droolsweb.util.ComputeMD5Hash;
 import com.neevtech.droolsweb.util.Constants;
 
 public class LoginServlet extends HttpServlet{
-	private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+	private static final Logger logger = Logger.getLogger(LoginServlet.class);
 	
 	public void init(ServletConfig conf) throws ServletException {
 		super.init(conf);
@@ -56,7 +55,7 @@ public class LoginServlet extends HttpServlet{
 				if(login.getUserId() != null) {
 					if(login.getPassword().equals(passwordMD5)) {
 						UserBean user = umi.getUserDetails(userId);
-						logger.info("User {} is authenticated.", user.getName());
+						logger.info("User "+ user.getName() +" is authenticated.");
 						
 						ItemManager itemManager = new ItemManagerImpl();
 						List<ItemBean> items = itemManager.getAllItems();

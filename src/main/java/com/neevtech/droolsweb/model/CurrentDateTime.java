@@ -3,11 +3,10 @@ package com.neevtech.droolsweb.model;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 public class CurrentDateTime {
-	private static final Logger logger = LoggerFactory.getLogger(CurrentDateTime.class);	
+	private static final Logger logger = Logger.getLogger(CurrentDateTime.class);	
 	private int date;
 	private int month;
 	private int year;
@@ -26,7 +25,7 @@ public class CurrentDateTime {
 		this.hour = calendar.get(Calendar.HOUR_OF_DAY);
 		this.minute = calendar.get(Calendar.MINUTE);
 		this.second = calendar.get(Calendar.SECOND);
-		logger.info("CurrentDateTime: {}", calendar.getTime());
+		logger.info("CurrentDateTime: "+ calendar.getTime());
 	}
 	
 	public int getDate() {

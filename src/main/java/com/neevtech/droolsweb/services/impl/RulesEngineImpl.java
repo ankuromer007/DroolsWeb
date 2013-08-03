@@ -1,7 +1,10 @@
 package com.neevtech.droolsweb.services.impl;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.drools.KnowledgeBase;
 import org.drools.agent.KnowledgeAgent;
 import org.drools.agent.KnowledgeAgentConfiguration;
@@ -9,15 +12,13 @@ import org.drools.agent.KnowledgeAgentFactory;
 import org.drools.io.ResourceChangeScannerConfiguration;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.neevtech.droolsweb.model.ItemBean;
 import com.neevtech.droolsweb.model.UserBean;
 import com.neevtech.droolsweb.services.RulesEngine;
 
 public class RulesEngineImpl implements RulesEngine {
-	private static final Logger logger = LoggerFactory.getLogger(RulesEngineImpl.class);
+	private static final Logger logger = Logger.getLogger(RulesEngineImpl.class);
 	private static StatefulKnowledgeSession ksession = null;
 
 	public void setupRulesEngine(){
@@ -58,6 +59,12 @@ public class RulesEngineImpl implements RulesEngine {
 		kaconf.setProperty("drools.agent.scanResources", "true");
 		kaconf.setProperty("drools.agent.newAgent", "true");
 		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaconf);
+		Authenticator.setDefault(new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("admin", "admin".toCharArray());
+            }
+        });
 		kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
 		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
 

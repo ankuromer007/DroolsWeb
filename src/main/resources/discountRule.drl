@@ -3,7 +3,7 @@ package com.neevtech.droolsweb.services.impl
 import com.neevtech.droolsweb.model.UserBean;
 import com.neevtech.droolsweb.model.ItemBean;
 import com.neevtech.droolsweb.model.CurrentDateTime;
-global org.slf4j.Logger logger;
+global org.apache.log4j.Logger logger;
 
 rule "Insert CurrentDateTime in knowledge session"
 salience 1
@@ -14,7 +14,7 @@ salience 1
 		exists ItemBean()
 	then
 		insert( new CurrentDateTime() );
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For US Location - 1st Occasion"
@@ -25,7 +25,7 @@ rule "For US Location - 1st Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(30);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For US Location - 2nd Occasion"
@@ -36,7 +36,7 @@ rule "For US Location - 2nd Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(30);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For US Location - 3rd Occasion"
@@ -47,7 +47,7 @@ rule "For US Location - 3rd Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(30);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For UK Location - 1st Occasion"
@@ -58,7 +58,7 @@ rule "For UK Location - 1st Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(20);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For UK Location - 2nd Occasion"
@@ -69,7 +69,7 @@ rule "For UK Location - 2nd Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(20);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For UK Location - 3rd Occasion"
@@ -80,7 +80,7 @@ rule "For UK Location - 3rd Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(20);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For INDIA Location - 1st Occasion"
@@ -91,7 +91,7 @@ rule "For INDIA Location - 1st Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(40);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For INDIA Location - 2nd Occasion"
@@ -102,18 +102,18 @@ rule "For INDIA Location - 2nd Occasion"
 		$item: ItemBean()
 	then
 		$item.addtDiscount(40);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "For INDIA Location - 3rd Occasion"
 
 	when
 		UserBean( location  == "INDIA" )
-		CurrentDateTime( date >= 1 && month == 9 || date <= 15 && month == 9 )
+		CurrentDateTime( date >= 1 && month == 8 || date <= 15 && month == 8 )
 		$item: ItemBean()
 	then
 		$item.addtDiscount(40);
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end
 
 rule "Retract facts from knowledge session"
@@ -127,5 +127,5 @@ salience -1
 		retract( $currentDateTime );
 		retract( $user );
 		retract( $item );
-		logger.info("RuleName: {}", drools.getRule().getName());
+		logger.info("RuleName: "+ drools.getRule().getName());
 end

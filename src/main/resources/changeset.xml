@@ -3,6 +3,6 @@
 	xs:schemaLocation='http://drools.org/drools-5.0/change-set.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd' >
 
    <add>
-      <resource source='file:/home/ankur/Desktop/discountRule.drl' type='DRL' />
+      <resource source='file:/home/ankur/workspace/DroolsWeb/src/main/resources/discountRule.drl' type='DRL' />
    </add>
 </change-set>

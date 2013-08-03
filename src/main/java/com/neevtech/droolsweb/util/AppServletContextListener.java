@@ -4,14 +4,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.neevtech.droolsweb.services.RulesEngine;
 import com.neevtech.droolsweb.services.impl.RulesEngineImpl;
 
 public class AppServletContextListener implements ServletContextListener {
-	private static final Logger logger = LoggerFactory.getLogger(AppServletContextListener.class);
+	private static final Logger logger = Logger.getLogger(AppServletContextListener.class);
 	ServletContext context;
 	
 	@Override
