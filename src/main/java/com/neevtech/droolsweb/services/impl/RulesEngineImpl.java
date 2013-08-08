@@ -65,8 +65,8 @@ public class RulesEngineImpl implements RulesEngine {
                 return new PasswordAuthentication("admin", "admin".toCharArray());
             }
         });
-		kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
-		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
+		//kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
+		kagent.applyChangeSet(ResourceFactory.newClassPathResource("ChangeSet.xml"));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
