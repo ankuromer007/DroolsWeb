@@ -9,6 +9,33 @@
 		<listener-class>com.neevtech.droolsweb.util.AppServletContextListener</listener-class>
 	</listener>
 	
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>resteasy.scan.providers</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>resteasy.scan.resources</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>JerseyRESTService</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.neevtech.droolsweb.rs.webservices.DroolsWebRESTApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JerseyRESTService</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>com.neevtech.droolsweb.web.LoginServlet</servlet-class>
@@ -27,7 +54,6 @@
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 	
-    
     <servlet>
 		<servlet-name>index</servlet-name>
 		<jsp-file>/index.jsp</jsp-file>

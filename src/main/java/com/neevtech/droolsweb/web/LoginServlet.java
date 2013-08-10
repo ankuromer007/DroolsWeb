@@ -50,11 +50,11 @@ public class LoginServlet extends HttpServlet{
 				String password = (String) req.getParameter("pass");
 				String passwordMD5=ComputeMD5Hash.md5(password);
 				
-				UserManager umi = new UserManagerImpl();
-				LoginBean login = umi.isUserExists(userId);
+				UserManager userManager = new UserManagerImpl();
+				LoginBean login = userManager.isUserExists(userId);
 				if(login.getUserId() != null) {
 					if(login.getPassword().equals(passwordMD5)) {
-						UserBean user = umi.getUserDetails(userId);
+						UserBean user = userManager.getUserDetails(userId);
 						logger.info("User "+ user.getName() +" is authenticated.");
 						
 						ItemManager itemManager = new ItemManagerImpl();

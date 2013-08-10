@@ -52,4 +52,37 @@ public class ItemManagerImpl implements ItemManager {
 		}
 		return items;
 	}
+	
+	public ItemBean getItem(int id) {
+		ItemBean item= new ItemBean();
+		try {
+			ConnectionFactory cf = new ConnectionFactory();
+			con = cf.getConnection();
+			
+			String sql = "SELECT * FROM items where id=?";
+			ptmt = con.prepareStatement(sql);
+			ptmt.setInt(1, id);
+			rs = ptmt.executeQuery();
+			
+			if (rs.next()) {
+				item.setId(rs.getInt("id"));
+				item.setName(rs.getString("name"));
+				item.setBasePrice(rs.getFloat("price"));
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (NamingException ne) {
+			ne.printStackTrace();
+		} finally {
+			try {
+				if (ptmt != null)
+					ptmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return item;
+	}
 }
