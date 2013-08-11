@@ -18,10 +18,11 @@ salience 1
 end
 
 rule "For US Location - 1st Occasion"
+activation-group "US"
 
 	when
 		UserBean( location  == "US" )
-		CurrentDateTime( date >= 26 && month == 7 || date <= 10 && month == 8 )
+		CurrentDateTime( date >= 5 && month == 8 || date <= 15 && month == 8 )
 		$item: ItemBean()
 	then
 		$item.addDiscount(30);
@@ -40,10 +41,11 @@ rule "For US Location - 2nd Occasion"
 end
 
 rule "For US Location - 3rd Occasion"
+activation-group "US"
 
 	when
 		UserBean( location  == "US" )
-		CurrentDateTime( date >= 20 && month == 6 || date <= 4 && month == 7 )
+		CurrentDateTime( date >= 12 && month == 8 || date <= 27 && month == 8 )
 		$item: ItemBean()
 	then
 		$item.addDiscount(30);
