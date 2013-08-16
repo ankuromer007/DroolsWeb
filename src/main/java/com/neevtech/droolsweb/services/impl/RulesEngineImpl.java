@@ -63,8 +63,8 @@ public class RulesEngineImpl implements RulesEngine {
 				return new PasswordAuthentication("admin", "admin".toCharArray());
 			}
 		});
-		//kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
-		kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
+		kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
+		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
@@ -72,10 +72,10 @@ public class RulesEngineImpl implements RulesEngine {
     }
 	
 	public void executeRules(UserBean user, List<ItemBean> items) {
-		ksession.insert(user);
 		for (ItemBean item : items) {
+			ksession.insert(user);
 			ksession.insert(item);
+			ksession.fireAllRules();
 		}
-		ksession.fireAllRules();
 	}
 }

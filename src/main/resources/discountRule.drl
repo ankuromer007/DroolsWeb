@@ -22,7 +22,7 @@ activation-group "US"
 
 	when
 		UserBean( location  == "US" )
-		CurrentDateTime( date >= 5 && month == 8 || date <= 15 && month == 8 )
+		CurrentDateTime( date >= 10 && month == 8 || date <= 25 && month == 8 )
 		$item: ItemBean()
 	then
 		$item.addDiscount(30);
@@ -67,7 +67,7 @@ rule "For UK Location - 2nd Occasion"
 
 	when
 		UserBean( location  == "UK" )
-		CurrentDateTime( date >= 5 && month == 8 || date <= 20 && month == 8 )
+		CurrentDateTime( date >= 8 && month == 8 || date <= 23 && month == 8 )
 		$item: ItemBean()
 	then
 		$item.addDiscount(20);
@@ -111,7 +111,7 @@ rule "For INDIA Location - 3rd Occasion"
 
 	when
 		UserBean( location  == "INDIA" )
-		CurrentDateTime( date >= 1 && month == 8 || date <= 15 && month == 8 )
+		CurrentDateTime( date >= 16 && month == 8 || date <= 1 && month == 9 )
 		$item: ItemBean()
 	then
 		$item.addDiscount(40);
