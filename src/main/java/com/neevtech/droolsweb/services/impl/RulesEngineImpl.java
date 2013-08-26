@@ -1,7 +1,5 @@
 package com.neevtech.droolsweb.services.impl;
 
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,6 +7,7 @@ import org.drools.KnowledgeBase;
 import org.drools.agent.KnowledgeAgent;
 import org.drools.agent.KnowledgeAgentConfiguration;
 import org.drools.agent.KnowledgeAgentFactory;
+import org.drools.agent.impl.PrintStreamSystemEventListener;
 import org.drools.io.ResourceChangeScannerConfiguration;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -57,14 +56,16 @@ public class RulesEngineImpl implements RulesEngine {
 		KnowledgeAgentConfiguration kaConfig = KnowledgeAgentFactory.newKnowledgeAgentConfiguration();
 		kaConfig.setProperty("drools.agent.newInstance", "false");
 		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaConfig);
-		Authenticator.setDefault(new Authenticator() {
+		kagent.setSystemEventListener(new PrintStreamSystemEventListener());
+		/*Authenticator.setDefault(new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication("admin", "admin".toCharArray());
 			}
-		});
-		kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
+		});*/
+		//kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
 		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
+		kagent.applyChangeSet(ResourceFactory.newClassPathResource("ChangeSet.xml"));
 
 		ResourceFactory.getResourceChangeNotifierService().start();
 		ResourceFactory.getResourceChangeScannerService().start();
