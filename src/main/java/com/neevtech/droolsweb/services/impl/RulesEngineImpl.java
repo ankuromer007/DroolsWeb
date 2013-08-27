@@ -7,7 +7,9 @@ import org.drools.KnowledgeBase;
 import org.drools.agent.KnowledgeAgent;
 import org.drools.agent.KnowledgeAgentConfiguration;
 import org.drools.agent.KnowledgeAgentFactory;
-import org.drools.agent.impl.PrintStreamSystemEventListener;
+import org.drools.event.knowledgebase.AfterRuleAddedEvent;
+import org.drools.event.knowledgebase.AfterRuleRemovedEvent;
+import org.drools.event.knowledgebase.DefaultKnowledgeBaseEventListener;
 import org.drools.io.ResourceChangeScannerConfiguration;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -23,30 +25,28 @@ public class RulesEngineImpl implements RulesEngine {
 	public void setupRulesEngine(){
 		try {
 			KnowledgeBase kbase = readKnowledgeBase();
+			kbase.addEventListener(new DefaultKnowledgeBaseEventListener(){
+				@Override
+				public void afterRuleRemoved(AfterRuleRemovedEvent event) {
+					logger.info("*-*-*-*-*-afterRuleRemoved*-*-*-*-*-");
+					logger.info("RuleName(in afterRemoved): "+event.getRule().getName());
+					logger.info("PackageName(in afterRemoved): "+event.getRule().getPackageName());
+					logger.info("*-*-*-*-*-afterRuleRemoved*-*-*-*-*-\n\n\n");
+				}
+				@Override
+				public void afterRuleAdded(AfterRuleAddedEvent event) {
+					logger.info("*-*-*-*-*-afterRuleAdded*-*-*-*-*-");
+					logger.info("RuleName(in afterAdded): "+event.getRule().getName());
+					logger.info("PackageName(in afterAdded): "+event.getRule().getPackageName());
+					logger.info("*-*-*-*-*-afterRuleAdded*-*-*-*-*-\n\n\n");
+				}
+			});
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("logger", logger);
         } catch (Throwable t) {
             t.printStackTrace();
         }
 	}
-	
-	/*private KnowledgeBase readKnowledgeBase() throws Exception {
-        KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        File drlFile = new File(System.getProperty("user.home")+"/workspace/DroolsWeb/src/main/resources/discountRule.drl");
-        kbuilder.add(ResourceFactory.newFileResource(drlFile), ResourceType.DRL);
-        //kbuilder.add(ResourceFactory.newClassPathResource("discountRule.drl"), ResourceType.DRL); 
-        
-        KnowledgeBuilderErrors errors = kbuilder.getErrors();
-        if (errors.size() > 0) {
-            for (KnowledgeBuilderError error: errors) {
-                System.err.println(error);
-            }
-            throw new IllegalArgumentException("Could not parse knowledge.");
-        }
-        KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-        kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-        return kbase;
-    }*/
 	
 	private KnowledgeBase readKnowledgeBase() throws Exception {
 		ResourceChangeScannerConfiguration scannerConfig = ResourceFactory.getResourceChangeScannerService().newResourceChangeScannerConfiguration();
@@ -55,15 +55,9 @@ public class RulesEngineImpl implements RulesEngine {
 
 		KnowledgeAgentConfiguration kaConfig = KnowledgeAgentFactory.newKnowledgeAgentConfiguration();
 		kaConfig.setProperty("drools.agent.newInstance", "false");
-		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("myagent", kaConfig);
-		kagent.setSystemEventListener(new PrintStreamSystemEventListener());
-		/*Authenticator.setDefault(new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("admin", "admin".toCharArray());
-			}
-		});*/
-		//kagent.applyChangeSet(ResourceFactory.newUrlResource("http://localhost:8080/guvnor/org.drools.guvnor.Guvnor/package/DroolsWeb/LATEST/ChangeSet.xml"));
+		KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent("kagent", kaConfig);
+		//kagent.setSystemEventListener(new PrintStreamSystemEventListener());
+		
 		//kagent.applyChangeSet(ResourceFactory.newClassPathResource("changeset.xml"));
 		kagent.applyChangeSet(ResourceFactory.newClassPathResource("ChangeSet.xml"));
 

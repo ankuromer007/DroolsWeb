@@ -6,62 +6,35 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 
 public class CurrentDateTime {
-	private static final Logger logger = Logger.getLogger(CurrentDateTime.class);	
-	private int date;
-	private int month;
+	private static final Logger logger = Logger.getLogger(CurrentDateTime.class);
 	private int year;
-	private int hour;
-	private int minute;
-	private int second;
+	private int dayOfYear;
 	
 	public CurrentDateTime() {
 		super();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		
-		this.date = calendar.get(Calendar.DATE);
-		this.month = calendar.get(Calendar.MONTH)+1;
 		this.year = calendar.get(Calendar.YEAR);
-		this.hour = calendar.get(Calendar.HOUR_OF_DAY);
-		this.minute = calendar.get(Calendar.MINUTE);
-		this.second = calendar.get(Calendar.SECOND);
+		this.dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
 		logger.info("CurrentDateTime: "+ calendar.getTime());
 	}
 	
-	public int getDate() {
-		return date;
+	public int getDayOfYear() {
+		return dayOfYear;
 	}
-	public void setDate(int date) {
-		this.date = date;
+	public void setDayOfYear(int dayOfYear) {
+		this.dayOfYear = dayOfYear;
 	}
-	public int getMonth() {
-		return month;
+
+	public boolean isDiscountApplicable(int fromDate, int fromMonth, int toDate, int toMonth){
+		return calculateDayOfYear(fromDate, fromMonth) <= dayOfYear && dayOfYear <= calculateDayOfYear(toDate, toMonth);
 	}
-	public void setMonth(int month) {
-		this.month = month;
-	}
-	public int getYear() {
-		return year;
-	}
-	public void setYear(int year) {
-		this.year = year;
-	}
-	public int getHour() {
-		return hour;
-	}
-	public void setHour(int hour) {
-		this.hour = hour;
-	}
-	public int getMinute() {
-		return minute;
-	}
-	public void setMinute(int minute) {
-		this.minute = minute;
-	}
-	public int getSecond() {
-		return second;
-	}
-	public void setSecond(int second) {
-		this.second = second;
+	
+	private int calculateDayOfYear(int date, int month){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+		calendar.set(year, month-1, date);
+		return calendar.get(Calendar.DAY_OF_YEAR);
 	}
 }
